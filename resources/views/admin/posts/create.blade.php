@@ -2,15 +2,18 @@
 
 @section('content')
 
+@include('admin.includes.errors')
+
+
 <div class="panel panel-heading">
 
-    <div class="panel-heading">
+    <div style='margin-bottom: 25px' class="panel-heading">
         Create a new post
     </div>
 
     <div class="panei-body">
 
-        <form action="{{ route('post.store') }}" method="post">
+        <form action="{{ route('post.store') }}" method="post" enctype="multipart/form-data">
 
             {{ csrf_field() }}
 

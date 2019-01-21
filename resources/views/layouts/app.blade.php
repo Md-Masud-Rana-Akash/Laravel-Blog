@@ -85,9 +85,20 @@
                     <ul class="list-group">
 
                         <li class="list-group-item">
-                            <a href="/home">Home</a>
+                            <a href="{{ route('home') }}">Home</a>
 
                         </li>
+
+                        <li class="list-group-item">
+                            <a href="{{ route('categories') }}">Categories</a>
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            <a href="{{route('category.create')}}">Create new Category</a>
+                        </li>
+
 
                         <li class="list-group-item">
 
