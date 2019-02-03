@@ -10,7 +10,8 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    {{-- <!-- Scripts -->
+    {{--
+    <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script> --}}
 
     <!-- Fonts -->
@@ -80,7 +81,7 @@
             <div class="row">
 
                 @if(Auth::check())
-                
+
                 <div style="margin-top: 20px" class="col-lg-4">
 
                     <ul class="list-group">
@@ -92,6 +93,11 @@
 
                         <li class="list-group-item">
                             <a href="{{ route('categories') }}">Categories</a>
+
+                        </li>
+
+                        <li class="list-group-item">
+                            <a href="{{route('posts') }}">All posts</a>
 
                         </li>
 
@@ -128,9 +134,15 @@
 
     <script>
         @if(Session::has('success'))
-        
-            toastr.success("{{ Session::get('success')}}")
+
+        toastr.success("{{ Session::get('success')}}")
         @endif
+
+        @if(Session::has('info'))
+
+        toastr.info("{{ Session::get('info')}}")
+        @endif
+
     </script>
 
 

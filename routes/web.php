@@ -30,6 +30,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     ]);
 
 
+    Route::get('/posts', [
+
+        'uses' => 'PostsController@index',
+        'as' => 'posts'
+
+    ]);
+
+
     Route::get('/post/create', [
 
         'uses' => 'PostsController@create',
@@ -43,6 +51,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         'as' => 'post.store'
 
     ]);
+
+
+
+
 
     Route::get('/category/create', [
 
