@@ -16,7 +16,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.posts.index')->with('posts', Post::all());
     }
 
     /**
@@ -26,7 +26,16 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create')->with('categories', Category::all());
+        $categories = Category::all();
+
+        if ($categories->count() == 0) {
+
+            Session::flash('info', 'You should have atlest one category.');
+
+            return redirect()->back();
+        }
+
+        return view('admin.posts.create')->with('categories', $categories);
     }
 
     /**
@@ -60,12 +69,15 @@ class PostsController extends Controller
             'title' => $request->title,
             'featured' => 'uploads/posts/' . $featured_new_name,
             'content' => $request->content,
-            'category_id' => $request->category_id
+            'category_id' => $request->category_id,
+            'slug' => str_slug($request->title)
 
         ]);
 
-        Session::flash('success' , 'Post created successfully');
+        Session::flash('success', 'Post created successfully');
 
+
+        return redirect()->back();
 
     }
 
