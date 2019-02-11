@@ -6,7 +6,7 @@
 
     <div class="panel-heading text-center">
 
-        All Posts
+        Tags
 
     </div>
 
@@ -17,64 +17,51 @@
             <thead>
 
                 <th>
-                    Image
+                    Tag Name
                 </th>
 
                 <th>
-                    Title
+                    Editing
                 </th>
 
                 <th>
-                    Edit
-                </th>
-
-                <th>
-                    Trash
+                    Deleting
                 </th>
 
             </thead>
 
             <tbody>
-                @if($posts->count()>0)
-                @foreach($posts as $post)
+                @if($tags->count() > 0)
+                @foreach($tags as $tag)
 
                 <tr>
 
                     <td>
 
-                        <img src="{{$post->featured}}" alt="{{ $post->title}}" width="90px" height="50px;">
-
-                    </td>
-
-                    <td>
-
-                        {{ $post->title }}
+                        {{ $tag->tag }}
 
                     </td>
 
 
                     <td>
-                        <a href="{{ route('post.edit' , [ 'id'=>$post->id ]) }}" class="btn btn-xs btn-info">
+                        <a href="{{ route('tag.edit' , [ 'id'=>$tag->id ]) }}" class="btn btn-xs btn-info">
                             Edit
                         </a>
                     </td>
 
 
                     <td>
-                        <a href="{{ route('post.delete' , [ 'id'=>$post->id ]) }}" class="btn btn-xs btn-danger">
-                            Trash
+                        <a href="{{ route('tag.delete' , [ 'id'=>$tag->id ]) }}" class="btn btn-xs btn-danger">
+                            Delete
                         </a>
-
                     </td>
 
                 </tr>
 
                 @endforeach
-
                 @else
-
                 <tr>
-                    <th colspan="5" class="text-center"> No published posts</th>
+                    <th colspan="5" class="text-center"> No tags yet</th>
 
                 </tr>
                 @endif

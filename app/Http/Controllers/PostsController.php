@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Tag;
 use App\Category;
 use App\Post;
 use Session;
@@ -35,7 +36,8 @@ class PostsController extends Controller
             return redirect()->back();
         }
 
-        return view('admin.posts.create')->with('categories', $categories);
+        return view('admin.posts.create')->with('categories', $categories)
+            ->with('tags', Tag::all());
     }
 
     /**
@@ -53,7 +55,8 @@ class PostsController extends Controller
             'title' => 'required',
             'featured' => 'required|image',
             'content' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'tags' => 'required'
 
         ]);
      #endregion
@@ -73,6 +76,8 @@ class PostsController extends Controller
             'slug' => str_slug($request->title)
 
         ]);
+
+        $post->tags()->attach($request->tags);
 
         Session::flash('success', 'Post created successfully');
 
@@ -100,7 +105,11 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        $category = Category::all();
+
+        return view('admin.posts.edit')->with('post', $post)->with('categories', $category)
+            ->with('tags', Tag::all());;
     }
 
     /**
@@ -112,7 +121,44 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+
+            'title' => 'required',
+
+            'content' => 'required',
+
+            'category_id' => 'required',
+
+        ]);
+
+        $post = Post::find($id);
+
+        if ($request->hasFile('featured')) {
+
+            $featured = $request->featured;
+
+            $featured_new_name = time() . $featured->getClientOriginalName();
+
+            $featured->move('uploads/posts', $featured_new_name);
+
+            $post->featured = 'uploads/posts/' . $featured_new_name;
+
+        }
+
+        $post->title = $request->title;
+
+        $post->content = $request->content;
+
+        $post->category_id = $request->category_id;
+
+        $post->save();
+
+        $post->tags()->sync($request->tags);
+
+        Session::flash('success', 'Post updated successfully');
+
+
+        return redirect()->route('posts');
     }
 
     /**
@@ -139,6 +185,32 @@ class PostsController extends Controller
         $posts = Post::onlyTrashed()->get();
 
         return view('admin.posts.trashed')->with('posts', $posts);
+
+    }
+
+    public function kill($id)
+    {
+
+        $post = Post::withTrashed()->where('id', $id)->first();
+
+        $post->forceDelete();
+
+        Session::flash('success', 'Post deleted successfully');
+
+        return redirect()->back();
+
+    }
+
+    public function restore($id)
+    {
+
+        $post = Post::withTrashed()->where('id', $id)->first();
+
+        $post->restore();
+
+        Session::flash('success', 'Post restored successfully');
+
+        return redirect()->route('posts');
 
     }
 
