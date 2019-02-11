@@ -4,6 +4,12 @@
 
 <div class="panel panel-default">
 
+    <div class="panel-heading text-center">
+
+        Categories
+
+    </div>
+
     <div class="panel-body">
 
         <table class="table table-hover">
@@ -25,7 +31,7 @@
             </thead>
 
             <tbody>
-
+                @if($categories->count() > 0)
                 @foreach($categories as $category)
 
                 <tr>
@@ -39,7 +45,7 @@
 
                     <td>
                         <a href="{{ route('category.edit' , [ 'id'=>$category->id ]) }}" class="btn btn-xs btn-info">
-                           Edit
+                            Edit
                         </a>
                     </td>
 
@@ -53,7 +59,12 @@
                 </tr>
 
                 @endforeach
+                @else
+                <tr>
+                    <th colspan="5" class="text-center"> No category yet</th>
 
+                </tr>
+                @endif
             </tbody>
 
         </table>
