@@ -19,7 +19,7 @@
 
             <div class="form-group">
                 <label for="title">Title</label>
-                <input type="text" name="title" class="form-control" value ="{{$post->title}}">
+                <input type="text" name="title" class="form-control" value="{{$post->title}}">
 
             </div>
             <div class="form-group">
@@ -30,11 +30,46 @@
 
                     @foreach($categories as $category)
 
-                    <option value="{{ $category->id }}">{{$category->name}}</option>
+                    <option value="{{ $category->id }}"
+                        
+                        @if($post->category_id == $category->id)
+
+                        selected
+
+                        @endif
+
+                        >{{$category->name}}</option>
                     @endforeach
 
                 </select>
 
+            </div>
+
+            <div class="form-group">
+
+                <label for="tags">Select tags</label>
+
+                @foreach ($tags as $tag)
+
+
+                <div class="checkbox">
+
+                    <label><input type="checkbox" name="tags[]" value="{{$tag->id}}"
+                        
+                        @foreach ($post->tags as $t)
+
+                        {{-- $tag->id ,all the available tags , $t->id tag of the particular post  --}}
+
+                        @if($tag->id == $t->id)      
+
+                        checked
+
+                        @endif
+
+                        @endforeach> {{$tag->tag}}</label>
+                   
+                </div>
+                @endforeach
             </div>
 
             <div class="form-group">
